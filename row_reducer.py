@@ -24,13 +24,16 @@ def reduce(A):
 
         #put zeros under pivot
         for i in range(j+1, num_rows):
-            a = (-1) * (M_next[i, j] / M_next[pivot])
+            a = -1 * M_next[i, j]
             M_next[i] += a * M_next[j]
 
         print(M_next, '\n')
 
-    #reduce each column 
-    #for j in range(num_cols-2:-1:-1):
+    #reduce each column above pivot
+    for j in range(num_cols-2,-1,-1):
+        for i in range(j-1,-1,-1):
+            a = -1 * M_next[i, j]
+            M_next[i] += a * M_next[j]
         
  
     return M_next
