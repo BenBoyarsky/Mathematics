@@ -1,6 +1,5 @@
 import numpy as np
 
-#Assume A has one solution  --> convenient pivots
 def reduce(A):
     M = A.astype(float)
     num_rows = M.shape[0]
@@ -25,7 +24,7 @@ def reduce(A):
         else:
             pivot_exists = True
         if not pivot_exists:
-            j +=1
+            j += 1
         else:
             pivots.append((i, j))
             #normalize pivot
@@ -46,7 +45,19 @@ def reduce(A):
         for i in range(row-1, -1, -1):
             a = -1 * M[i, col]
             M[i] += a * M[row]
-    
+
+    #apply rank theorems
+    N = M[0:num_rows, 0:num_cols-1].copy() 
+    rankM = rank(M)
+    rankN = rank(N)
+
+    if rankN < rankM:
+        print('No solution.')
+    elif (rankN == rankM) and (rankN == num_cols-1):
+        print('There is one solution.')
+    else:
+        (rankN == rankM) and (rankN < num_cols-1)
+        print(f'Infinite solutions')
     return M
 
 #assumes RR augmented matrix
@@ -92,7 +103,3 @@ A = np.array([
 ])
 
 #print(rank(A))
-
-
-
-#still need to move 0 rows to lower area.
