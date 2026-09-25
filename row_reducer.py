@@ -8,32 +8,51 @@ def reduce(A):
     num_cols = M.shape[1]
 
     #reduce each column below pivot
-    for j in range(num_cols - 1): 
+    i = 0
+    j = 0
+    pivots = []
+    while i < num_rows and j < num_cols - 1: 
         #get a nonzero num to pivot
-        pivot = (j, j)
+        pivot = (i, j)
+        flag = False
         if M_next[pivot] == 0:
-            for i in range(j+1, num_rows):
-                if not M_next[i, j] == 0:
-                    rowA = M_next[j].copy()
-                    rowB = M_next[i].copy()
-                    M_next[j] = rowB
-                    M_next[i] = rowA
+            for k in range(i+1, num_rows):
+                if (not M_next[k, j] == 0):
+                    rowA = M_next[i].copy()
+                    rowB = M_next[k].copy()
+                    M_next[i] = rowB
+                    M_next[k] = rowA
+                    flag = True
                     break
-        #normalize pivot
-        M_next[j] /= M_next[pivot]
+        else:
+            flag = True
+        if not flag:
+            j +=1
+        else:
+            pivots.append((i, j))
+            #normalize pivot
+            M_next[i] /= M_next[pivot]
 
-        #put zeros under pivot
-        for i in range(j+1, num_rows):
-            a = -1 * M_next[i, j]
-            M_next[i] += a * M_next[j]
+            #reduce below pivot
+            for k in range(i+1, num_rows):
+                a = -1 * M_next[k, j]
+                M_next[k] += a * M_next[i]
+            i += 1
+            j += 1
+    del j
+    del i
 
-        print(M_next, '\n')
+    #reduce above pivots
+    for pivot in reversed(pivots):
+        row, col = pivot
+        for i in range(row-1, -1, -1):
+            a = -1 * M_next[i, col]
+            M_next[i] += a * M_next[row]
 
-    #reduce each column above pivot
-    for j in range(num_cols-2,-1,-1):
+    '''for j in range(num_cols-2,-1,-1):
         for i in range(j-1,-1,-1):
             a = -1 * M_next[i, j]
-            M_next[i] += a * M_next[j]
+            M_next[i] += a * M_next[j]'''
  
     return M_next
 
@@ -69,7 +88,7 @@ A1 = np.array([
     [2, -1,  3,  1,  2,   8]
 
 ])
-#print(reduce(A1))
+print(reduce(A1))
 
 A = np.array([
 
@@ -81,5 +100,8 @@ A = np.array([
 
 ])
 
-print(rank(A))
+#print(rank(A))
 
+
+
+#still need to move 0 rows to lower area.
