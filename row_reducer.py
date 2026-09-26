@@ -51,6 +51,7 @@ def reduce(A):
     rankM = rank(M)
     rankN = rank(N)
 
+    print(f'Rank: {rankM}')
     if rankN < rankM:
         print('No solution.')
     elif (rankN == rankM) and (rankN == num_cols-1):
@@ -81,25 +82,10 @@ def rank(A):
 
 A1 = np.array([
 
-    [1, 2],
-
-    [2, 4],
-
-    [3, 6],
-
-    [1, 3]
+    [1, 0, 1, 0],
+    [-1, -2, -1, 0],
+    [2, 2, 5, 3],
+    [2, 4, 8, 6]
 
 ])
 print(reduce(A1))
-
-A = np.array([
-
-    [1, 0, 3, 0],
-
-    [0, 1, 2, 0],
-
-    [0, 0, 0, 1]
-
-])
-
-#print(rank(A))
