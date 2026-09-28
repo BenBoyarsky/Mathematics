@@ -12,9 +12,9 @@ def reduce(A):
     while i < num_rows and j < num_cols: 
         #get a nonzero num to pivot if one exists
         pivot_exists = False
-        if M[i, j] == 0:
+        if np.isclose(M[(i, j)], 0):
             for k in range(i+1, num_rows):
-                if (not M[k, j] == 0):
+                if not np.isclose(M[k, j], 0):
                     rowA = M[i].copy()
                     rowB = M[k].copy()
                     M[i] = rowB
@@ -82,10 +82,13 @@ def rank(A):
 
 A1 = np.array([
 
-    [1, 0, 1, 0],
-    [-1, -2, -1, 0],
-    [2, 2, 5, 3],
-    [2, 4, 8, 6]
+    [1, 1, -1, 0],
+    [-1, -1, 1, 0],
+    [-1, 2, 0, 1],
+    [0, -2, -6, -2],
+    [-1, 0, -6, -1]
 
 ])
 print(reduce(A1))
+
+#need to clean up final form.
