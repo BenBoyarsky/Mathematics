@@ -59,6 +59,8 @@ def reduce(A):
     else:
         (rankN == rankM) and (rankN < num_cols-1)
         print(f'Infinite solutions')
+
+    np.set_printoptions(precision=3, suppress = True)
     return M
 
 #assumes RR augmented matrix
