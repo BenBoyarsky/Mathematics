@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 int roll_dice() {
@@ -9,8 +10,14 @@ int roll_dice() {
     return number;
 }
 
-double mean(vector<double> numbers) {
-    int size = numbers.size();
+//precondition: mean_up_to_this_index < numbers.size() (exclusive)
+double mean(vector<double> numbers, int mean_up_to_this_index = -1) {
+    int size;
+    if (mean_up_to_this_index == -1) {
+        size = numbers.size();
+    } else {
+        size = mean_up_to_this_index;
+    }
     if (size == 0) {
         return 0;
     }
@@ -38,6 +45,14 @@ int main() {
     cout << "Number of simulations: ";
     int num_simulations; cin >> num_simulations;
     vector<double> rolls = simulate(num_simulations);
+
+    ofstream file("rolls.csv");
+    file << "roll,value,mean\n";
+    for (int i = 0; i < rolls.size(); i++) {
+        file << i + 1 << "," << rolls[i] << "," << mean(rolls, i + 1) << "\n";
+    }
+    file.close();
+
     cout << "Average roll: " << mean(rolls);
   
     return 0;
