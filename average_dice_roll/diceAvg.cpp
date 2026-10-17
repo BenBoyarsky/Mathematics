@@ -42,18 +42,39 @@ vector<double> simulate(int num_simulations) {
 int main() {
     srand(time(0));
     
-    cout << "Number of simulations: ";
-    int num_simulations; cin >> num_simulations;
-    vector<double> rolls = simulate(num_simulations);
+    cout << "Number of rolls: ";
+    int num_rolls; cin >> num_rolls;
+    
+    const short num_simulations = 5;
 
-    ofstream file("rolls.csv");
-    file << "roll,value,mean\n";
-    for (int i = 0; i < rolls.size(); i++) {
-        file << i + 1 << "," << rolls[i] << "," << mean(rolls, i + 1) << "\n";
+    //make csv data columns
+    vector<vector<double>> values;
+    vector<vector<double>> means;
+    for (int i = 0; i < num_simulations; i++) {
+        vector<double> rolls = simulate(num_rolls);
+        values.push_back(rolls);
+        //fill means
+        vector<double> mean_column;
+        for (int j = 0; j < num_rolls; j++) { 
+            mean_column.push_back(mean(rolls, j+1));
+        }
+        means.push_back(mean_column);
+    }
+
+    ofstream file("rolls.csv");  
+    //header
+    file << "roll";
+    for (int i = 0; i < num_simulations; i++) {
+        file << ",value" << i << ",mean" << i;
+    }
+    file << "\n";
+    for (int i = 0; i < num_rolls; i++) {
+        file << i + 1;
+        for (int j = 0; j < num_simulations; j++)
+        file << "," << values[j][i] << "," << mean(values[j], i + 1);
+        file << "\n";
     }
     file.close();
-
-    cout << "Average roll: " << mean(rolls);
   
     return 0;
 }
