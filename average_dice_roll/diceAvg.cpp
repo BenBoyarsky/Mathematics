@@ -78,3 +78,5 @@ int main() {
   
     return 0;
 }
+
+//potential updates: make mean() more efficient since mean(i-1) is already calculated
